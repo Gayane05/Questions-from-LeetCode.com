@@ -1,2 +1,2 @@
 # Questions-from-LeetCode.com
-Chapter Array:
+Chapter Array/Strings:
