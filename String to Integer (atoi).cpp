@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <set>
 #include <string>
 #include <vector>
@@ -7,9 +7,6 @@
 int myAtoi(std::string str) 
 {
 
-	// 1079 / 1079 test cases passed.
-	//	Runtime : 4 ms
-	//	Memory Usage : 6.7 MB
 	// Example 1 :
 	// Input: "42"
 	// Output : 42
@@ -49,6 +46,11 @@ int myAtoi(std::string str)
 	// Input : "+78"
 	// Output : 78
 
+	// 1079 / 1079 test cases passed.
+	// With using additional memory: std::vector<int>
+	//	Runtime : 4 ms
+	//	Memory Usage : 6.7 MB
+
 	int i = 0;
 	if (str[i] == '0' && !isdigit(str[i + 1])) // 0-1
 	{
@@ -80,6 +82,7 @@ int myAtoi(std::string str)
 		{
 			++i;
 		}
+
 
 		while (isdigit(str[i]))
 		{
@@ -137,11 +140,92 @@ int myAtoi(std::string str)
 	{
 		return 0;
 	}
+
+	// Without using additional memory
+	// Runtime: 4 ms
+	// Memory Usage : 6.4 MB
+
+	int i = 0;
+	if (str[i] == '0' && !isdigit(str[i + 1])) // 0-1
+	{
+		return 0;
+	}
+
+	while (str[i] == ' ' || str[i] == '0')
+	{
+		++i;
+	}
+
+	if (str[i] == '-' || isdigit(str[i]) || str[i] == '+')
+	{
+		long long number = 0;
+		char sign = '+';
+
+		if (str[i] == '-')
+		{
+			sign = '-';
+			++i;
+		}
+		else if (str[i] == '+')
+		{
+			++i;
+		}
+
+		while (str[i] == '0')
+		{
+			++i;
+		}
+
+		bool isBig = false;
+		int digitCount = 0;
+
+		while (isdigit(str[i]))
+		{
+			if (digitCount > 10) // In VStudio19 this check is unnecessary
+			{
+				isBig = true;
+				break;
+			}
+			number = (number * 10) + (str[i] - 48);
+			++i;
+			++digitCount;
+		}
+
+		if (sign == '-')
+		{
+			number *= -1;
+		}
+
+		if (isBig && sign == '+')
+		{
+			return INT_MAX;
+		}
+		else if (isBig && sign == '-')
+		{
+			return INT_MIN;
+		}
+
+		if (number > INT_MAX)
+		{
+			return INT_MAX;
+		}
+		else if (number < INT_MIN)
+		{
+			return INT_MIN;
+		}
+
+		return number;
+	}
+	else
+	{
+		return 0;
+	}
+
 }
 
 int main()
 {
-	myAtoi("42");
+	myAtoi("20000000000000000000");
 
 	return 0;
 }
