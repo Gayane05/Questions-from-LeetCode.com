@@ -1,76 +1,72 @@
 #include <iostream>
-#include <ctime>
+#include <string>
 
-constexpr auto size = 5;
-
-void Sort(int* arr, int left, int right)
+int strStr(std::string haystack, std::string needle)
 {
-	int pivot = arr[(left + right) / 2];
-	int i = left, j = right;
-	int k;
-	int f;
 
-	while (i <= j)
+	// 77 / 77 test cases passed.
+	// Without using std::find() function.
+	// Runtime: 4 ms
+	// Memory Usage: 6.8 MB
+	bool check = true;
+	if (needle.size() == 0)
 	{
-		while (arr[i] > pivot) i++;
-		while (arr[j] < pivot) j--;
-		if (i <= j) {
-
-			k = arr[i];
-			f = arr[j];
-
-			std::swap(arr[i], arr[j]);
-			i++;
-			j--;
-		}
+		return 0;
 	}
-
-	if (j > left) Sort(arr, left, j);
-	if (i < right) Sort(arr, i, right);
+	else if (needle.size() > haystack.size())
+	{
+		return -1;
+	}
+	else
+	{
+		bool check = true;
+		int j = 0;
+		int i = 0;
+		int l = 0;
+		
+		while (j != haystack.size())
+		{
+			if (haystack[j] == needle[i])
+			{
+				if(j + needle.size() - 1 < haystack.size() &&
+				(haystack[j + needle.size() - 1] == needle[needle.size() - 1]))
+				{
+					l = j;
+					check = true;
+					for (; i < needle.size(); )
+					{
+						if (needle[i] == haystack[j])
+						{
+							++i;
+							++j;
+						}
+						else
+						{
+							check = false;
+							break;
+						}
+					}
+					if (check)
+					{
+						return l;
+					}
+				}
+			}
+			j = l + 1;
+			++l;
+			i = 0;
+		}
+		return -1;
+	}
+	
 }
-
 
 int main()
 {
-	int mat[size][size];
-	int k = 0;
-	int l = 0;
+	std::string haystack{ "mississippi" };
+	std::string needle{ "sipp" };
 
-	srand(time(NULL));
+	strStr(haystack, needle);
 
-	for (int i = 0; i < size; ++i)
-	{
-		for (int j = 0; j < size; ++j)
-		{
-			mat[i][j] = (rand() % 10) + 1;
-			std::cout << mat[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-
-	int vec[size * size];
-
-	for (int i = 0; i < size; ++i)
-	{
-		for (int j = 0; j < size; ++j, ++k)
-		{
-			vec[k] = mat[i][j];
-		}
-	}
-
-	Sort(vec, 0, (size * size) - 1);
-	k = 0;
-	std::cout << std::endl;
-	for (int i = 0; i < size; ++i)
-	{
-		for (int j = 0; j < size; ++j, ++k)
-		{
-			mat[i][j] = vec[k];
-			std::cout << mat[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-
-	system("pause");
 	return 0;
 }
