@@ -5,7 +5,7 @@ int strStr(std::string haystack, std::string needle)
 {
 
 	// 77 / 77 test cases passed.
-	// Without using std::find() function.
+	// Without using std::string::find() function.
 	// Runtime: 4 ms
 	// Memory Usage: 6.8 MB
 	bool check = true;
@@ -29,10 +29,11 @@ int strStr(std::string haystack, std::string needle)
 			if (haystack[j] == needle[i])
 			{
 				if(j + needle.size() - 1 < haystack.size() &&
-				(haystack[j + needle.size() - 1] == needle[needle.size() - 1]))
+				(haystack[j + needle.size() - 1] == needle[needle.size() - 1])) // Try to find beginning and end of needle.
 				{
 					l = j;
 					check = true;
+					// If beginning and end are found, then check if elements between that are present in haystack in that range.
 					for (; i < needle.size(); )
 					{
 						if (needle[i] == haystack[j])
@@ -42,10 +43,12 @@ int strStr(std::string haystack, std::string needle)
 						}
 						else
 						{
+							// Break from for if at least one element isn't the same.
 							check = false;
 							break;
 						}
 					}
+					// If all elements are present return index of j.
 					if (check)
 					{
 						return l;
@@ -54,11 +57,23 @@ int strStr(std::string haystack, std::string needle)
 			}
 			j = l + 1;
 			++l;
-			i = 0;
+			i = 0; // Another try.
 		}
 		return -1;
 	}
 	
+	// With using std::string::find() function.
+	// Runtime: 4 ms
+	// Memory Usage : 6.9 MB
+	if (needle.size() == 0)
+	{
+		return 0;
+	}
+	else
+	{
+		return haystack.find(needle);
+	}
+
 }
 
 int main()
