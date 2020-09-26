@@ -2,6 +2,8 @@
 
 int mySqrt(int x) 
 {
+	
+	 // 0ms
 	if (x == 0)
 	{
 		return 0;
